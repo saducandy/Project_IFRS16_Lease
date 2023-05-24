@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Lease;
 import com.example.demo.repository.LeaseRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import java.util.List;
 public class LeaseController {
 
     private LeaseRepo leaseRepo;
+    private Logger LOG = LoggerFactory.getLogger(LeaseController.class);
     @Autowired
     public void setLeaseRepo(LeaseRepo leaseRepo) {
         this.leaseRepo = leaseRepo;
@@ -53,6 +56,39 @@ public class LeaseController {
     }
 
 
+    @RequestMapping (path = "{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Lease updateLeaseDetail(@PathVariable(name = "id") long leaseID, @RequestBody Lease leaseToUpdate) {
 
+
+
+            if (leaseRepo.findById(leaseID).isPresent()) {
+                Lease leaseFound = leaseRepo.findById(leaseID).get();
+
+                leaseFound.setBranchCode(leaseToUpdate.getBranchCode());
+                leaseFound.setLeaseCategoryType(leaseToUpdate.getLeaseCategoryType());
+                leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
+                leaseFound.setShortTermLease(leaseToUpdate.isShortTermLease());
+                leaseFound.setInitialPayment(leaseToUpdate.getInitialPayment());
+                leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
+                leaseFound.setContractCommencementDate(leaseToUpdate.getContractCommencementDate());
+                leaseFound.setContractExpiryDate(leaseToUpdate.getContractExpiryDate());
+                leaseFound.setFirstInstallmentDate(leaseToUpdate.getFirstInstallmentDate());
+                leaseFound.setInterestRate(leaseToUpdate.getInterestRate());
+                leaseFound.setLowValueAsset(leaseToUpdate.isLowValueAsset());
+                leaseFound.setMonthlyAmortizationAmountOfPrepaidLease(leaseToUpdate.getMonthlyAmortizationAmountOfPrepaidLease());
+                leaseFound.setMonthlyAmortizationAmountOfUnpaidLease(leaseToUpdate.getMonthlyAmortizationAmountOfUnpaidLease());
+                leaseFound.setNameOfLessor(leaseToUpdate.getNameOfLessor());
+                leaseFound.setPrePaymentEnd_Date(leaseToUpdate.getPrePaymentEnd_Date());
+                leaseFound.setRemainingMonthsForPrepaidRentAfterInitialApplication(leaseToUpdate.getRemainingMonthsForPrepaidRentAfterInitialApplication());
+                leaseFound.setRemainingMonthsInContractTermNotPaidAfterInitialApplication(leaseToUpdate.getRemainingMonthsInContractTermNotPaidAfterInitialApplication());
+                leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
+
+                return leaseRepo.save(leaseFound);
+            }else {
+                return leaseToUpdate;
+            }
+
+
+    }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Entity
-public class Lease {
+public class Lease{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
