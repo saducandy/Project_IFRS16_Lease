@@ -28,8 +28,13 @@ public class LeaseController {
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public Lease getLeaseDetail(@PathVariable(name = "id") long id){
-        return leaseRepo.findById(id).get();
+    public List<Lease> getLeaseDetail(@PathVariable(name = "id") long id){
+        if (leaseRepo.findById(id).isPresent()) {
+            return (List<Lease>) leaseRepo.findById(id).get();
+        }else {
+            LOG.info("No Lease found with the given ID");
+            return leaseRepo.findAll();
+        }
     }
 
 
