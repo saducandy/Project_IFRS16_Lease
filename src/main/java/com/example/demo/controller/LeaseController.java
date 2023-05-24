@@ -85,6 +85,7 @@ public class LeaseController {
 
                 return leaseRepo.save(leaseFound);
             }else {
+                LOG.info("No Leases found with the given ID!!");
                 return leaseToUpdate;
             }
 
