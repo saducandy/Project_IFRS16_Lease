@@ -18,10 +18,10 @@ public class Lease{
     private String nameOfLessor;
     private boolean lowValueAsset;
     private boolean shortTermLease;
-    private int monthlyAmortizationAmountOfPrepaidLease;
-    private int monthlyAmortizationAmountOfUnpaidLease;
+    private double monthlyAmortizationAmountOfPrepaidLease;
+    private double monthlyAmortizationAmountOfUnpaidLease;
     private int contractAgreementPeriod;
-    private int initialPayment;
+    private double initialPayment;
     private double interestRate;
     private int remainingMonthsForPrepaidRentAfterInitialApplication;
     private int remainingMonthsInContractTermNotPaidAfterInitialApplication;
@@ -35,6 +35,73 @@ public class Lease{
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date contractCommencementDate;
 
+    private double area;
+    private double paymentPerCare;
+    private double vatOrTTO;
+
+    private double totalContractPrice;
+    private double contractVatPayment;
+    private double contractVatPercentage;
+    private double totalPeriodPayment;
+
+    public double getTotalContractPrice() {
+        return totalContractPrice;
+    }
+
+    public void setTotalContractPrice(double totalContractPrice) {
+        this.totalContractPrice = totalContractPrice;
+    }
+
+    public double getContractVatPayment() {
+        return contractVatPayment;
+    }
+
+    public void setContractVatPayment(double contractVatPayment) {
+        this.contractVatPayment = contractVatPayment;
+    }
+
+    public double getContractVatPercentage() {
+        return contractVatPercentage;
+    }
+
+    public void setContractVatPercentage(double contractVatPercentage) {
+        this.contractVatPercentage = contractVatPercentage;
+    }
+
+    public double getTotalPeriodPayment() {
+        return totalPeriodPayment;
+    }
+
+    public void setTotalPeriodPayment(double totalPeriodPayment) {
+        this.totalPeriodPayment = totalPeriodPayment;
+    }
+
+
+
+
+    public double getArea() {
+        return area;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public double getPaymentPerCare() {
+        return paymentPerCare;
+    }
+
+    public void setPaymentPerCare(double paymentPerCare) {
+        this.paymentPerCare = paymentPerCare;
+    }
+
+    public double getVatOrTTO() {
+        return vatOrTTO;
+    }
+
+    public void setVatOrTTO(double vatOrTTO) {
+        this.vatOrTTO = vatOrTTO;
+    }
 
     public Long getLease_Id() {
         return leaseID;
@@ -84,19 +151,22 @@ public class Lease{
         this.shortTermLease = shortTermLease;
     }
 
-    public int getMonthlyAmortizationAmountOfPrepaidLease() {
+    public double getMonthlyAmortizationAmountOfPrepaidLease() {
         return monthlyAmortizationAmountOfPrepaidLease;
     }
 
-    public void setMonthlyAmortizationAmountOfPrepaidLease(int monthlyAmortizationAmountOfPrepaidLease) {
+
+
+    public void setMonthlyAmortizationAmountOfPrepaidLease(double monthlyAmortizationAmountOfPrepaidLease) {
         this.monthlyAmortizationAmountOfPrepaidLease = monthlyAmortizationAmountOfPrepaidLease;
     }
 
-    public int getMonthlyAmortizationAmountOfUnpaidLease() {
+
+    public double getMonthlyAmortizationAmountOfUnpaidLease() {
         return monthlyAmortizationAmountOfUnpaidLease;
     }
 
-    public void setMonthlyAmortizationAmountOfUnpaidLease(int monthlyAmortizationAmountOfUnpaidLease) {
+    public void setMonthlyAmortizationAmountOfUnpaidLease(double monthlyAmortizationAmountOfUnpaidLease) {
         this.monthlyAmortizationAmountOfUnpaidLease = monthlyAmortizationAmountOfUnpaidLease;
     }
 
@@ -108,11 +178,11 @@ public class Lease{
         this.contractAgreementPeriod = contractAgreementPeriod;
     }
 
-    public int getInitialPayment() {
+    public double getInitialPayment() {
         return initialPayment;
     }
 
-    public void setInitialPayment(int initialPayment) {
+    public void setInitialPayment(double initialPayment) {
         this.initialPayment = initialPayment;
     }
 
@@ -202,6 +272,13 @@ public class Lease{
                 ", contractExpiryDate=" + contractExpiryDate +
                 ", firstInstallmentDate=" + firstInstallmentDate +
                 ", contractCommencementDate=" + contractCommencementDate +
+                ", area=" + area +
+                ", paymentPerCare=" + paymentPerCare +
+                ", vatOrTTO=" + vatOrTTO +
+                ", totalContractPrice=" + totalContractPrice +
+                ", contractVatPayment=" + contractVatPayment +
+                ", contractVatPercentage=" + contractVatPercentage +
+                ", totalPeriodPayment=" + totalPeriodPayment +
                 '}';
     }
 }

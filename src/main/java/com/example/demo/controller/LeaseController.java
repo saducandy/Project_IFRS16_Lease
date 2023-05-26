@@ -15,6 +15,8 @@ import java.util.List;
 @RequestMapping(path = "/api/IFRS/")
 public class LeaseController {
 
+    private double monthlyPaymentOfPrePaidOrUnpaid;
+    private double monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO;
     private LeaseRepo leaseRepo;
     private Logger LOG = LoggerFactory.getLogger(LeaseController.class);
     @Autowired
@@ -56,6 +58,13 @@ public class LeaseController {
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Lease createLease(@RequestBody Lease infoLease){
 
+        //calculating the monthly payment of the Lease with vat/TTO and without vat/TTO
+        monthlyPaymentOfPrePaidOrUnpaid = infoLease.getArea() * infoLease.getPaymentPerCare();
+        monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO = monthlyPaymentOfPrePaidOrUnpaid + (monthlyPaymentOfPrePaidOrUnpaid * infoLease.getVatOrTTO());
+        infoLease.setMonthlyAmortizationAmountOfPrepaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
+        infoLease.setMonthlyAmortizationAmountOfUnpaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
+
+
         return leaseRepo.save(infoLease);
 
     }
@@ -80,7 +89,14 @@ public class LeaseController {
                 leaseFound.setFirstInstallmentDate(leaseToUpdate.getFirstInstallmentDate());
                 leaseFound.setInterestRate(leaseToUpdate.getInterestRate());
                 leaseFound.setLowValueAsset(leaseToUpdate.isLowValueAsset());
-                leaseFound.setMonthlyAmortizationAmountOfPrepaidLease(leaseToUpdate.getMonthlyAmortizationAmountOfPrepaidLease());
+
+                //calculating the monthly payment of the Lease with vat/TTO and without vat/TTO
+                monthlyPaymentOfPrePaidOrUnpaid = leaseFound.getArea() * leaseFound.getPaymentPerCare();
+                monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO = monthlyPaymentOfPrePaidOrUnpaid + (monthlyPaymentOfPrePaidOrUnpaid * leaseFound.getVatOrTTO());
+                leaseFound.setMonthlyAmortizationAmountOfPrepaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
+                leaseFound.setMonthlyAmortizationAmountOfUnpaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
+
+                leaseFound.setMonthlyAmortizationAmountOfPrepaidLease(monthlyPaymentOfPrePaidOrUnpaid);
                 leaseFound.setMonthlyAmortizationAmountOfUnpaidLease(leaseToUpdate.getMonthlyAmortizationAmountOfUnpaidLease());
                 leaseFound.setNameOfLessor(leaseToUpdate.getNameOfLessor());
                 leaseFound.setPrePaymentEnd_Date(leaseToUpdate.getPrePaymentEnd_Date());
@@ -95,6 +111,19 @@ public class LeaseController {
             }
 
 
+    }
+
+    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
+    public void deleteLease(@PathVariable(name = "id") long idOfLease){
+
+        if(leaseRepo.findById(idOfLease).isPresent()) {
+            leaseRepo.deleteById(idOfLease);
+            LOG.info("Successfully deleted a Lease");
+
+        }else {
+            LOG.info("There is no Lease found with the ID given");
+
+        }
     }
 
 }
