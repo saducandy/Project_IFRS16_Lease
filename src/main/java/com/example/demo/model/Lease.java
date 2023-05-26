@@ -39,10 +39,23 @@ public class Lease{
     private double paymentPerCare;
     private double vatOrTTO;
 
-    private double totalContractPrice;
-    private double contractVatPayment;
+
+    private double totalContractPrice;//calculated
+
+    private double contractVatPayment;//calculated
     private double contractVatPercentage;
-    private double totalPeriodPayment;
+
+    private double totalPeriodPayment;//calculated
+
+    private double annualRentalFee;//calculated
+
+    public double getAnnualRentalFee() {
+        return annualRentalFee;
+    }
+
+    public void setAnnualRentalFee(double annualRentalFee) {
+        this.annualRentalFee = annualRentalFee;
+    }
 
     public double getTotalContractPrice() {
         return totalContractPrice;

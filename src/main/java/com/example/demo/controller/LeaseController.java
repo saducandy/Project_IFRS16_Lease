@@ -18,6 +18,9 @@ public class LeaseController {
     private double monthlyPaymentOfPrePaidOrUnpaid;
     private double monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO;
     private LeaseRepo leaseRepo;
+    private long defaultId = 1234;
+    private int monthsInYear = 12;
+
     private Logger LOG = LoggerFactory.getLogger(LeaseController.class);
     @Autowired
     public void setLeaseRepo(LeaseRepo leaseRepo) {
@@ -30,12 +33,13 @@ public class LeaseController {
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public List<Lease> getLeaseDetail(@PathVariable(name = "id") long id){
+    public Lease getLeaseDetail(@PathVariable(name = "id") long id){
+
         if (leaseRepo.findById(id).isPresent()) {
-            return (List<Lease>) leaseRepo.findById(id).get();
+            return leaseRepo.findById(id).get();
         }else {
             LOG.info("No Lease found with the given ID");
-            return leaseRepo.findAll();
+            return leaseRepo.findById(defaultId).get();
         }
     }
 
@@ -65,6 +69,10 @@ public class LeaseController {
         infoLease.setMonthlyAmortizationAmountOfUnpaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
 
 
+        //calculating annual Rental Fee
+        infoLease.setAnnualRentalFee(monthsInYear * infoLease.getMonthlyAmortizationAmountOfPrepaidLease());
+
+
         return leaseRepo.save(infoLease);
 
     }
@@ -78,6 +86,10 @@ public class LeaseController {
             if (leaseRepo.findById(leaseID).isPresent()) {
                 Lease leaseFound = leaseRepo.findById(leaseID).get();
 
+                leaseFound.setArea(leaseToUpdate.getArea());
+                leaseFound.setPaymentPerCare(leaseToUpdate.getPaymentPerCare());
+                leaseFound.setVatOrTTO(leaseToUpdate.getVatOrTTO());
+                leaseFound.setContractVatPercentage(leaseToUpdate.getContractVatPercentage());
                 leaseFound.setBranchCode(leaseToUpdate.getBranchCode());
                 leaseFound.setLeaseCategoryType(leaseToUpdate.getLeaseCategoryType());
                 leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
@@ -96,8 +108,10 @@ public class LeaseController {
                 leaseFound.setMonthlyAmortizationAmountOfPrepaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
                 leaseFound.setMonthlyAmortizationAmountOfUnpaidLease(monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO);
 
-                leaseFound.setMonthlyAmortizationAmountOfPrepaidLease(monthlyPaymentOfPrePaidOrUnpaid);
-                leaseFound.setMonthlyAmortizationAmountOfUnpaidLease(leaseToUpdate.getMonthlyAmortizationAmountOfUnpaidLease());
+                //calculating annual Rental Fee
+                leaseFound.setAnnualRentalFee(monthsInYear * leaseFound.getMonthlyAmortizationAmountOfPrepaidLease());
+
+
                 leaseFound.setNameOfLessor(leaseToUpdate.getNameOfLessor());
                 leaseFound.setPrePaymentEnd_Date(leaseToUpdate.getPrePaymentEnd_Date());
                 leaseFound.setRemainingMonthsForPrepaidRentAfterInitialApplication(leaseToUpdate.getRemainingMonthsForPrepaidRentAfterInitialApplication());
