@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Lease{
@@ -20,20 +20,20 @@ public class Lease{
     private boolean shortTermLease;
     private double monthlyAmortizationAmountOfPrepaidLease;
     private double monthlyAmortizationAmountOfUnpaidLease;
-    private int contractAgreementPeriod;
+    private long contractAgreementPeriod;
     private double initialPayment;
     private double interestRate;
-    private int remainingMonthsForPrepaidRentAfterInitialApplication;
-    private int remainingMonthsInContractTermNotPaidAfterInitialApplication;
+    private long remainingMonthsForPrepaidRentAfterInitialApplication;
+    private long remainingMonthsInContractTermNotPaidAfterInitialApplication;
     private String leaseCategoryType;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date prePaymentEndDate;
+    private LocalDate prePaymentEndDate;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date contractExpiryDate;
+    private LocalDate contractExpiryDate;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date firstInstallmentDate;
+    private LocalDate firstInstallmentDate;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date contractCommencementDate;
+    private LocalDate contractCommencementDate;
 
     private double area;
     private double paymentPerCare;
@@ -48,81 +48,6 @@ public class Lease{
     private double totalPeriodPayment;//calculated
 
     private double annualRentalFee;//calculated
-
-    public double getAnnualRentalFee() {
-        return annualRentalFee;
-    }
-
-    public void setAnnualRentalFee(double annualRentalFee) {
-        this.annualRentalFee = annualRentalFee;
-    }
-
-    public double getTotalContractPrice() {
-        return totalContractPrice;
-    }
-
-    public void setTotalContractPrice(double totalContractPrice) {
-        this.totalContractPrice = totalContractPrice;
-    }
-
-    public double getContractVatPayment() {
-        return contractVatPayment;
-    }
-
-    public void setContractVatPayment(double contractVatPayment) {
-        this.contractVatPayment = contractVatPayment;
-    }
-
-    public double getContractVatPercentage() {
-        return contractVatPercentage;
-    }
-
-    public void setContractVatPercentage(double contractVatPercentage) {
-        this.contractVatPercentage = contractVatPercentage;
-    }
-
-    public double getTotalPeriodPayment() {
-        return totalPeriodPayment;
-    }
-
-    public void setTotalPeriodPayment(double totalPeriodPayment) {
-        this.totalPeriodPayment = totalPeriodPayment;
-    }
-
-
-
-
-    public double getArea() {
-        return area;
-    }
-
-    public void setArea(double area) {
-        this.area = area;
-    }
-
-    public double getPaymentPerCare() {
-        return paymentPerCare;
-    }
-
-    public void setPaymentPerCare(double paymentPerCare) {
-        this.paymentPerCare = paymentPerCare;
-    }
-
-    public double getVatOrTTO() {
-        return vatOrTTO;
-    }
-
-    public void setVatOrTTO(double vatOrTTO) {
-        this.vatOrTTO = vatOrTTO;
-    }
-
-    public Long getLease_Id() {
-        return leaseID;
-    }
-
-    public void setLease_Id(Long lease_Id) {
-        leaseID = lease_Id;
-    }
 
     public String getBranchCode() {
         return branchCode;
@@ -168,12 +93,9 @@ public class Lease{
         return monthlyAmortizationAmountOfPrepaidLease;
     }
 
-
-
     public void setMonthlyAmortizationAmountOfPrepaidLease(double monthlyAmortizationAmountOfPrepaidLease) {
         this.monthlyAmortizationAmountOfPrepaidLease = monthlyAmortizationAmountOfPrepaidLease;
     }
-
 
     public double getMonthlyAmortizationAmountOfUnpaidLease() {
         return monthlyAmortizationAmountOfUnpaidLease;
@@ -183,11 +105,11 @@ public class Lease{
         this.monthlyAmortizationAmountOfUnpaidLease = monthlyAmortizationAmountOfUnpaidLease;
     }
 
-    public int getContractAgreementPeriod() {
+    public long getContractAgreementPeriod() {
         return contractAgreementPeriod;
     }
 
-    public void setContractAgreementPeriod(int contractAgreementPeriod) {
+    public void setContractAgreementPeriod(long contractAgreementPeriod) {
         this.contractAgreementPeriod = contractAgreementPeriod;
     }
 
@@ -207,19 +129,19 @@ public class Lease{
         this.interestRate = interestRate;
     }
 
-    public int getRemainingMonthsForPrepaidRentAfterInitialApplication() {
+    public long getRemainingMonthsForPrepaidRentAfterInitialApplication() {
         return remainingMonthsForPrepaidRentAfterInitialApplication;
     }
 
-    public void setRemainingMonthsForPrepaidRentAfterInitialApplication(int remainingMonthsForPrepaidRentAfterInitialApplication) {
+    public void setRemainingMonthsForPrepaidRentAfterInitialApplication(long remainingMonthsForPrepaidRentAfterInitialApplication) {
         this.remainingMonthsForPrepaidRentAfterInitialApplication = remainingMonthsForPrepaidRentAfterInitialApplication;
     }
 
-    public int getRemainingMonthsInContractTermNotPaidAfterInitialApplication() {
+    public long getRemainingMonthsInContractTermNotPaidAfterInitialApplication() {
         return remainingMonthsInContractTermNotPaidAfterInitialApplication;
     }
 
-    public void setRemainingMonthsInContractTermNotPaidAfterInitialApplication(int remainingMonthsInContractTermNotPaidAfterInitialApplication) {
+    public void setRemainingMonthsInContractTermNotPaidAfterInitialApplication(long remainingMonthsInContractTermNotPaidAfterInitialApplication) {
         this.remainingMonthsInContractTermNotPaidAfterInitialApplication = remainingMonthsInContractTermNotPaidAfterInitialApplication;
     }
 
@@ -231,38 +153,101 @@ public class Lease{
         this.leaseCategoryType = leaseCategoryType;
     }
 
-    public Date getPrePaymentEnd_Date() {
+    public LocalDate getPrePaymentEndDate() {
         return prePaymentEndDate;
     }
 
-    public void setPrePaymentEnd_Date(Date prePaymentEnd_Date) {
-        prePaymentEndDate = prePaymentEnd_Date;
+    public void setPrePaymentEndDate(LocalDate prePaymentEndDate) {
+        this.prePaymentEndDate = prePaymentEndDate;
     }
 
-    public Date getContractExpiryDate() {
+    public LocalDate getContractExpiryDate() {
         return contractExpiryDate;
     }
 
-    public void setContractExpiryDate(Date contractExpiryDate) {
+    public void setContractExpiryDate(LocalDate contractExpiryDate) {
         this.contractExpiryDate = contractExpiryDate;
     }
 
-    public Date getFirstInstallmentDate() {
+    public LocalDate getFirstInstallmentDate() {
         return firstInstallmentDate;
     }
 
-    public void setFirstInstallmentDate(Date firstInstallmentDate) {
+    public void setFirstInstallmentDate(LocalDate firstInstallmentDate) {
         this.firstInstallmentDate = firstInstallmentDate;
     }
 
-    public Date getContractCommencementDate() {
+    public LocalDate getContractCommencementDate() {
         return contractCommencementDate;
     }
 
-    public void setContractCommencementDate(Date contractCommencementDate) {
+    public void setContractCommencementDate(LocalDate contractCommencementDate) {
         this.contractCommencementDate = contractCommencementDate;
     }
 
+    public double getArea() {
+        return area;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public double getPaymentPerCare() {
+        return paymentPerCare;
+    }
+
+    public void setPaymentPerCare(double paymentPerCare) {
+        this.paymentPerCare = paymentPerCare;
+    }
+
+    public double getVatOrTTO() {
+        return vatOrTTO;
+    }
+
+    public void setVatOrTTO(double vatOrTTO) {
+        this.vatOrTTO = vatOrTTO;
+    }
+
+    public double getTotalContractPrice() {
+        return totalContractPrice;
+    }
+
+    public void setTotalContractPrice(double totalContractPrice) {
+        this.totalContractPrice = totalContractPrice;
+    }
+
+    public double getContractVatPayment() {
+        return contractVatPayment;
+    }
+
+    public void setContractVatPayment(double contractVatPayment) {
+        this.contractVatPayment = contractVatPayment;
+    }
+
+    public double getContractVatPercentage() {
+        return contractVatPercentage;
+    }
+
+    public void setContractVatPercentage(double contractVatPercentage) {
+        this.contractVatPercentage = contractVatPercentage;
+    }
+
+    public double getTotalPeriodPayment() {
+        return totalPeriodPayment;
+    }
+
+    public void setTotalPeriodPayment(double totalPeriodPayment) {
+        this.totalPeriodPayment = totalPeriodPayment;
+    }
+
+    public double getAnnualRentalFee() {
+        return annualRentalFee;
+    }
+
+    public void setAnnualRentalFee(double annualRentalFee) {
+        this.annualRentalFee = annualRentalFee;
+    }
 
     @Override
     public String toString() {
@@ -292,6 +277,7 @@ public class Lease{
                 ", contractVatPayment=" + contractVatPayment +
                 ", contractVatPercentage=" + contractVatPercentage +
                 ", totalPeriodPayment=" + totalPeriodPayment +
+                ", annualRentalFee=" + annualRentalFee +
                 '}';
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,11 @@ public class LeaseController {
     private LeaseRepo leaseRepo;
     private long defaultId = 1234;
     private int monthsInYear = 12;
+
+    private LocalDate endOfMonth;
+    private LocalDate endOfMonthForPrepaymentEndDate;
+    private LocalDate nextDateForPrepaymentEndDate;
+    private LocalDate nextDate;
 
     private Logger LOG = LoggerFactory.getLogger(LeaseController.class);
     @Autowired
@@ -72,6 +79,27 @@ public class LeaseController {
         //calculating annual Rental Fee
         infoLease.setAnnualRentalFee(monthsInYear * infoLease.getMonthlyAmortizationAmountOfPrepaidLease());
 
+//        Period difference = Period.between(infoLease.getContractCommencementDate(), infoLease.getContractExpiryDate())
+
+
+
+        //calculating contract Agreement period
+//        infoLease.setContractAgreementPeriod();
+
+        endOfMonth= infoLease.getContractExpiryDate().withDayOfMonth(infoLease.getContractExpiryDate().getMonth().length(infoLease.getContractExpiryDate().isLeapYear()));
+        nextDate = endOfMonth.plusDays(1);
+        infoLease.setContractAgreementPeriod(ChronoUnit.MONTHS.between(infoLease.getContractCommencementDate(),nextDate));
+
+
+        //calculating prepayment end date and pre payment period
+        endOfMonthForPrepaymentEndDate = infoLease.getPrePaymentEndDate().withDayOfMonth(infoLease.getPrePaymentEndDate().getMonth().length(infoLease.getPrePaymentEndDate().isLeapYear()));
+        nextDateForPrepaymentEndDate = endOfMonthForPrepaymentEndDate.plusDays(1);
+        infoLease.setRemainingMonthsForPrepaidRentAfterInitialApplication(ChronoUnit.MONTHS.between(infoLease.getContractCommencementDate(),nextDateForPrepaymentEndDate));
+
+
+        //calculating RemainingMonthsInContractTermNotPaidAfterInitialApplication
+        infoLease.setRemainingMonthsInContractTermNotPaidAfterInitialApplication(ChronoUnit.MONTHS.between(nextDateForPrepaymentEndDate, nextDate));
+
 
         return leaseRepo.save(infoLease);
 
@@ -101,6 +129,8 @@ public class LeaseController {
                 leaseFound.setFirstInstallmentDate(leaseToUpdate.getFirstInstallmentDate());
                 leaseFound.setInterestRate(leaseToUpdate.getInterestRate());
                 leaseFound.setLowValueAsset(leaseToUpdate.isLowValueAsset());
+                leaseFound.setPrePaymentEndDate(leaseToUpdate.getPrePaymentEndDate());
+
 
                 //calculating the monthly payment of the Lease with vat/TTO and without vat/TTO
                 monthlyPaymentOfPrePaidOrUnpaid = leaseFound.getArea() * leaseFound.getPaymentPerCare();
@@ -111,11 +141,24 @@ public class LeaseController {
                 //calculating annual Rental Fee
                 leaseFound.setAnnualRentalFee(monthsInYear * leaseFound.getMonthlyAmortizationAmountOfPrepaidLease());
 
+                //calculating Contract agreement period for put request
+                endOfMonth= leaseFound.getContractExpiryDate().withDayOfMonth(leaseFound.getContractExpiryDate().getMonth().length(leaseFound.getContractExpiryDate().isLeapYear()));
+
+
+                nextDate = endOfMonth.plusDays(1);
+                leaseFound.setContractAgreementPeriod(ChronoUnit.MONTHS.between(leaseFound.getContractCommencementDate(),nextDate));
+
+                //calculating prepayment end date and pre payment period
+                endOfMonthForPrepaymentEndDate = leaseFound.getPrePaymentEndDate().withDayOfMonth(leaseFound.getPrePaymentEndDate().getMonth().length(leaseFound.getPrePaymentEndDate().isLeapYear()));
+                nextDateForPrepaymentEndDate = endOfMonthForPrepaymentEndDate.plusDays(1);
+                leaseFound.setRemainingMonthsForPrepaidRentAfterInitialApplication(ChronoUnit.MONTHS.between(leaseFound.getContractCommencementDate(),nextDateForPrepaymentEndDate));
 
                 leaseFound.setNameOfLessor(leaseToUpdate.getNameOfLessor());
-                leaseFound.setPrePaymentEnd_Date(leaseToUpdate.getPrePaymentEnd_Date());
-                leaseFound.setRemainingMonthsForPrepaidRentAfterInitialApplication(leaseToUpdate.getRemainingMonthsForPrepaidRentAfterInitialApplication());
-                leaseFound.setRemainingMonthsInContractTermNotPaidAfterInitialApplication(leaseToUpdate.getRemainingMonthsInContractTermNotPaidAfterInitialApplication());
+
+                //calculating RemainingMonthsInContractTermNotPaidAfterInitialApplication
+                leaseFound.setRemainingMonthsInContractTermNotPaidAfterInitialApplication(ChronoUnit.MONTHS.between(nextDateForPrepaymentEndDate, nextDate));
+
+
                 leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
 
                 return leaseRepo.save(leaseFound);
