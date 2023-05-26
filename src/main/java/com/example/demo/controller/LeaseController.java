@@ -18,6 +18,7 @@ import java.util.List;
 public class LeaseController {
 
     private double monthlyPaymentOfPrePaidOrUnpaid;
+
     private double monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO;
     private LeaseRepo leaseRepo;
     private long defaultId = 1234;
@@ -27,6 +28,9 @@ public class LeaseController {
     private LocalDate endOfMonthForPrepaymentEndDate;
     private LocalDate nextDateForPrepaymentEndDate;
     private LocalDate nextDate;
+    private double TCP;
+    private double totalPeriodPayment1;
+    private double CVP;
 
     private Logger LOG = LoggerFactory.getLogger(LeaseController.class);
     @Autowired
@@ -100,6 +104,15 @@ public class LeaseController {
         //calculating RemainingMonthsInContractTermNotPaidAfterInitialApplication
         infoLease.setRemainingMonthsInContractTermNotPaidAfterInitialApplication(ChronoUnit.MONTHS.between(nextDateForPrepaymentEndDate, nextDate));
 
+        //calculating totalPeriodPayment
+        totalPeriodPayment1 = infoLease.getContractAgreementPeriod() * infoLease.getMonthlyAmortizationAmountOfPrepaidLease();
+        infoLease.setTotalPeriodPayment(totalPeriodPayment1);
+        CVP = totalPeriodPayment1 * infoLease.getContractVatPercentage();
+        infoLease.setContractVatPayment(CVP);
+        TCP = totalPeriodPayment1 + CVP;
+        infoLease.setTotalContractPrice(TCP);
+
+
 
         return leaseRepo.save(infoLease);
 
@@ -132,6 +145,7 @@ public class LeaseController {
                 leaseFound.setPrePaymentEndDate(leaseToUpdate.getPrePaymentEndDate());
 
 
+
                 //calculating the monthly payment of the Lease with vat/TTO and without vat/TTO
                 monthlyPaymentOfPrePaidOrUnpaid = leaseFound.getArea() * leaseFound.getPaymentPerCare();
                 monthlyPaymentOfPrePaidOrUnpaidWithVatOrTTO = monthlyPaymentOfPrePaidOrUnpaid + (monthlyPaymentOfPrePaidOrUnpaid * leaseFound.getVatOrTTO());
@@ -157,6 +171,15 @@ public class LeaseController {
 
                 //calculating RemainingMonthsInContractTermNotPaidAfterInitialApplication
                 leaseFound.setRemainingMonthsInContractTermNotPaidAfterInitialApplication(ChronoUnit.MONTHS.between(nextDateForPrepaymentEndDate, nextDate));
+
+                //calculating TCP for put
+                totalPeriodPayment1 = leaseFound.getContractAgreementPeriod() * leaseFound.getMonthlyAmortizationAmountOfPrepaidLease();
+                leaseFound.setTotalPeriodPayment(totalPeriodPayment1);
+                CVP = totalPeriodPayment1 * leaseFound.getContractVatPercentage();
+                leaseFound.setContractVatPayment(CVP);
+                TCP = totalPeriodPayment1 + CVP;
+                leaseFound.setTotalContractPrice(TCP);
+
 
 
                 leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
