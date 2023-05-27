@@ -113,6 +113,10 @@ public class LeaseController {
         infoLease.setTotalContractPrice(TCP);
 
 
+        //initial payment calculation
+        infoLease.setInitialPayment(infoLease.getMonthlyAmortizationAmountOfPrepaidLease() * infoLease.getRemainingMonthsForPrepaidRentAfterInitialApplication());
+
+
 
         return leaseRepo.save(infoLease);
 
@@ -135,7 +139,7 @@ public class LeaseController {
                 leaseFound.setLeaseCategoryType(leaseToUpdate.getLeaseCategoryType());
                 leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
                 leaseFound.setShortTermLease(leaseToUpdate.isShortTermLease());
-                leaseFound.setInitialPayment(leaseToUpdate.getInitialPayment());
+
                 leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
                 leaseFound.setContractCommencementDate(leaseToUpdate.getContractCommencementDate());
                 leaseFound.setContractExpiryDate(leaseToUpdate.getContractExpiryDate());
@@ -180,11 +184,15 @@ public class LeaseController {
                 TCP = totalPeriodPayment1 + CVP;
                 leaseFound.setTotalContractPrice(TCP);
 
+                //initial payment calculation
+                leaseFound.setInitialPayment(leaseFound.getMonthlyAmortizationAmountOfPrepaidLease() * leaseFound.getRemainingMonthsForPrepaidRentAfterInitialApplication());
+
 
 
                 leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
 
                 return leaseRepo.save(leaseFound);
+
             }else {
                 LOG.info("No Leases found with the given ID!!");
                 return leaseToUpdate;
