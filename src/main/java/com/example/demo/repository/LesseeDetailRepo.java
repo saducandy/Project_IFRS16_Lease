@@ -1,4 +1,7 @@
 package com.example.demo.repository;
 
-public interface LesseeDetailRepo {
+import com.example.demo.model.LesseeDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LesseeDetailRepo extends JpaRepository<LesseeDetail, String> {
 }

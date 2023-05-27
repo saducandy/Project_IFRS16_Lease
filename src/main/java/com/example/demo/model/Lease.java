@@ -49,6 +49,26 @@ public class Lease{
 
     private double annualRentalFee;//calculated
 
+    private long leaseLiabilityPeriod;//calculated
+
+    private double leaseLiability;
+
+    public double getLeaseLiability() {
+        return leaseLiability;
+    }
+
+    public void setLeaseLiability(double leaseLiability) {
+        this.leaseLiability = leaseLiability;
+    }
+
+    public long getLeaseLiabilityPeriod() {
+        return leaseLiabilityPeriod;
+    }
+
+    public void setLeaseLiabilityPeriod(long leaseLiabilityPeriod) {
+        this.leaseLiabilityPeriod = leaseLiabilityPeriod;
+    }
+
     public String getBranchCode() {
         return branchCode;
     }

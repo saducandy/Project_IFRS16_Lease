@@ -116,6 +116,14 @@ public class LeaseController {
         //initial payment calculation
         infoLease.setInitialPayment(infoLease.getMonthlyAmortizationAmountOfPrepaidLease() * infoLease.getRemainingMonthsForPrepaidRentAfterInitialApplication());
 
+        //calculating Lease Liability period
+        infoLease.setLeaseLiabilityPeriod(infoLease.getRemainingMonthsInContractTermNotPaidAfterInitialApplication() / monthsInYear);
+
+        //calculating lease Liability
+        infoLease.setLeaseLiability(infoLease.getAnnualRentalFee() * infoLease.getLeaseLiabilityPeriod());
+
+        //deriving first installment date
+        infoLease.setFirstInstallmentDate(nextDateForPrepaymentEndDate);
 
 
         return leaseRepo.save(infoLease);
@@ -188,6 +196,14 @@ public class LeaseController {
                 leaseFound.setInitialPayment(leaseFound.getMonthlyAmortizationAmountOfPrepaidLease() * leaseFound.getRemainingMonthsForPrepaidRentAfterInitialApplication());
 
 
+                //calculating Lease Liability period
+                leaseFound.setLeaseLiabilityPeriod(leaseFound.getRemainingMonthsInContractTermNotPaidAfterInitialApplication() / monthsInYear);
+
+                //calculating lease Liability
+                leaseFound.setLeaseLiability(leaseFound.getAnnualRentalFee() * leaseFound.getLeaseLiabilityPeriod());
+
+                //deriving first installment date
+                leaseFound.setFirstInstallmentDate(nextDateForPrepaymentEndDate);
 
                 leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
 
