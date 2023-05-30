@@ -4,6 +4,7 @@ import com.example.demo.model.Lease;
 import com.example.demo.model.LeaseLiabilityPV;
 import com.example.demo.repository.LeaseLiabilityRepo;
 import com.example.demo.repository.LeaseRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +78,7 @@ public class LeaseLiabilityController {
         leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
         leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
         leaseLiabilityPV.setCalculatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
+        deleteRemaining();
 
 
         return leaseLiabilityRepo.save(leaseLiabilityPV);
@@ -89,14 +91,50 @@ public class LeaseLiabilityController {
 
     @RequestMapping(path = "recentLL", method = RequestMethod.GET)
     public List<LeaseLiabilityPV> getRecentLiabilityPayment(){
+
         return leaseLiabilityRepo.findByOrderByCalculatedAtDesc();
     }
 
+
     @RequestMapping(path = "recentLastLL", method = RequestMethod.GET)
     public LeaseLiabilityPV getLastRecentLiabilityPayment(){
+        System.out.println("before calling the method");
+
+        System.out.println("After calling the method");
         return leaseLiabilityRepo.findByOrderByCalculatedAtDesc().get(0);
     }
 
+
+
+    /*************************************************Deleting older Lease Liability calculations*************************************************/
+
+
+    public void deleteRemaining(){
+
+        System.out.println(leaseLiabilityRepo.count());
+
+        if(leaseLiabilityRepo.count() > 4){
+            System.out.println(leaseLiabilityRepo.count());
+            System.out.println("Deleting started");
+            for (long i = leaseLiabilityRepo.count(); i > 4; i--) {
+                System.out.println("Entering If");
+                String idToDelete = leaseLiabilityRepo.findByOrderByCalculatedAtDesc().get(4).getId();
+                leaseLiabilityRepo.deleteById(idToDelete);
+                System.out.println("Leaving If");
+                System.out.println("Deleting Ends");
+            }
+            System.out.println(leaseLiabilityRepo.count());
+
+        }
+    }
+
+    /*************************************************Deleting all Lease Liability calculations*************************************************/
+
+    @RequestMapping(path = "deleteAllLL", method = RequestMethod.DELETE)
+    public void deleteAllLL(){
+        leaseLiabilityRepo.deleteAll();
+
+    }
 
 
 
@@ -106,19 +144,18 @@ public class LeaseLiabilityController {
 
         Lease foundLease = leaseRepo.findByNameOfLessor(lessorName);
         FV = foundLease.getAnnualRentalFee();
-        System.out.println("New Round");
-        System.out.println(FV);
+
 
         n = (int) (foundLease.getRemainingMonthsForPrepaidRentAfterInitialApplication() / 12) + (whichInstallment);
-        System.out.println(n);
+
 
         power = pow(r, n);
-        System.out.println(power);
+
 
         fraction = 1/power;
-        System.out.println(fraction);
 
-        System.out.println((FV * fraction));
+
+
         return FV * fraction;
 
     }
@@ -126,10 +163,10 @@ public class LeaseLiabilityController {
     public double totalInstallmentLL(String lessorName1){
 
         Lease foundLease = leaseRepo.findByNameOfLessor(lessorName1);
-        System.out.println("liability-Period");
+
 
         liabilityPeriod = foundLease.getLeaseLiabilityPeriod();
-        System.out.println(liabilityPeriod);
+
 
         double liabilitySummation = 0;
         for (int i = 0; i < liabilityPeriod; i++){

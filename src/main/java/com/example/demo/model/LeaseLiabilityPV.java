@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.ZonedDateTime;
@@ -15,10 +12,16 @@ public class LeaseLiabilityPV {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
+    @Column(unique = true)
     private String lessorName;
+    @Column(unique = true)
     private String branchCode;
     private double amountLeaseLiability;
     private ZonedDateTime calculatedAt;
+
+    public String getId() {
+        return id;
+    }
 
     public ZonedDateTime getCalculatedAt() {
         return calculatedAt;
