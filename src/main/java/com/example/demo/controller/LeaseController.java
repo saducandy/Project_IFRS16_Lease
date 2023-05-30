@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+//import com.example.demo.calculator.LeaseLiabilityPV;
 import com.example.demo.model.Lease;
 import com.example.demo.repository.LeaseRepo;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+
+import static java.lang.Math.pow;
 
 @RestController
 @RequestMapping(path = "/api/IFRS/")
@@ -33,6 +36,9 @@ public class LeaseController {
     private double CVP;
 
     private Logger LOG = LoggerFactory.getLogger(LeaseController.class);
+
+
+
     @Autowired
     public void setLeaseRepo(LeaseRepo leaseRepo) {
         this.leaseRepo = leaseRepo;
@@ -63,7 +69,7 @@ public class LeaseController {
 
 
     @RequestMapping(path = "name/{leaserName}", method = RequestMethod.GET)
-    public List<Lease> getLeaseByName(@PathVariable(name = "leaserName")String name){
+    public Lease getLeaseByName(@PathVariable(name = "leaserName")String name){
         return leaseRepo.findByNameOfLessor(name);
     }
 
@@ -126,6 +132,7 @@ public class LeaseController {
         infoLease.setFirstInstallmentDate(nextDateForPrepaymentEndDate);
 
 
+        System.out.println(infoLease.getBranchCode());
         return leaseRepo.save(infoLease);
 
     }
@@ -207,6 +214,7 @@ public class LeaseController {
 
                 leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
 
+
                 return leaseRepo.save(leaseFound);
 
             }else {
@@ -229,5 +237,8 @@ public class LeaseController {
 
         }
     }
+
+
+
 
 }

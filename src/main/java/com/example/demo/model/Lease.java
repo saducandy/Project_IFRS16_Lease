@@ -12,9 +12,10 @@ public class Lease{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long leaseID;
-
+    @Column(unique = true)
     private String branchCode;
     private String reportedBy;
+    @Column(unique = true)
     private String nameOfLessor;
     private boolean lowValueAsset;
     private boolean shortTermLease;

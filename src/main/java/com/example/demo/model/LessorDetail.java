@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,17 +12,17 @@ public class LessorDetail {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String lessorID;
-    @NotNull
+    @Column(nullable = false)
     private String name;
-    @NotNull
+    @Column(nullable = false)
     private String city;
-    @NotNull
+    @Column(nullable = false)
     private String wereda;
-    @NotNull
+    @Column(nullable = false)
     private String houseNumber;
-    @NotNull
+    @Column(nullable = false)
     private String phoneNumber;
-    @NotNull
+    @Column(nullable = false)
     private String mapNumber;
 
 

@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -14,7 +11,7 @@ public class LesseeDetail {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String lesseeID;
-    @NotNull
+    @Column(nullable = false)
     private String branchName;
 
     private String city;
@@ -25,9 +22,9 @@ public class LesseeDetail {
 
     private String phoneNumber;
 
-    @NotNull
+    @Column(nullable = false)
     private String branchCode;
-    @NotNull
+    @Column(nullable = false)
     private String district;
 
     private String postalBoxNumber;
