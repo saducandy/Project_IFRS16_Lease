@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static java.lang.Math.pow;
@@ -74,10 +76,27 @@ public class LeaseLiabilityController {
         leaseLiabilityPV.setAmountLeaseLiability(totalInstallmentLL(lease.getNameOfLessor()));
         leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
         leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
+        leaseLiabilityPV.setCalculatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
 
 
         return leaseLiabilityRepo.save(leaseLiabilityPV);
     }
+
+
+    /*************************************************Getting the Last recent Lease Liability*************************************************/
+
+
+
+    @RequestMapping(path = "recentLL", method = RequestMethod.GET)
+    public List<LeaseLiabilityPV> getRecentLiabilityPayment(){
+        return leaseLiabilityRepo.findByOrderByCalculatedAtDesc();
+    }
+
+    @RequestMapping(path = "recentLastLL", method = RequestMethod.GET)
+    public LeaseLiabilityPV getLastRecentLiabilityPayment(){
+        return leaseLiabilityRepo.findByOrderByCalculatedAtDesc().get(0);
+    }
+
 
 
 

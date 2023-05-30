@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.ZonedDateTime;
+
 @Entity
 public class LeaseLiabilityPV {
 
@@ -16,10 +18,15 @@ public class LeaseLiabilityPV {
     private String lessorName;
     private String branchCode;
     private double amountLeaseLiability;
+    private ZonedDateTime calculatedAt;
 
+    public ZonedDateTime getCalculatedAt() {
+        return calculatedAt;
+    }
 
-
-
+    public void setCalculatedAt(ZonedDateTime calculatedAt) {
+        this.calculatedAt = calculatedAt;
+    }
 
     public String getLessorName() {
         return lessorName;

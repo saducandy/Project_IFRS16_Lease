@@ -11,10 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import static java.lang.Math.pow;
 
 @RestController
 @RequestMapping(path = "/api/IFRS/")
@@ -130,6 +130,9 @@ public class LeaseController {
 
         //deriving first installment date
         infoLease.setFirstInstallmentDate(nextDateForPrepaymentEndDate);
+
+        //fetching the present timestamp for createdAt
+        infoLease.setCreatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
 
 
         System.out.println(infoLease.getBranchCode());

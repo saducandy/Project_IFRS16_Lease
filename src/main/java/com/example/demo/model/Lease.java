@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Entity
 public class Lease{
@@ -53,6 +55,16 @@ public class Lease{
     private long leaseLiabilityPeriod;//calculated
 
     private double leaseLiability;
+
+    private ZonedDateTime createdAt;
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public double getLeaseLiability() {
         return leaseLiability;
