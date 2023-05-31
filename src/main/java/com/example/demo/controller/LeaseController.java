@@ -89,7 +89,7 @@ public class LeaseController {
         //calculating annual Rental Fee
         infoLease.setAnnualRentalFee(monthsInYear * infoLease.getMonthlyAmortizationAmountOfPrepaidLease());
 
-//        Period difference = Period.between(infoLease.getContractCommencementDate(), infoLease.getContractExpiryDate())
+//      Period difference = Period.between(infoLease.getContractCommencementDate(), infoLease.getContractExpiryDate())
 
 
 
@@ -129,7 +129,7 @@ public class LeaseController {
         infoLease.setLeaseLiability(infoLease.getAnnualRentalFee() * infoLease.getLeaseLiabilityPeriod());
 
         //deriving first installment date
-        infoLease.setFirstInstallmentDate(nextDateForPrepaymentEndDate);
+        infoLease.setFirstInstallmentDate(endOfMonthForPrepaymentEndDate);
 
         //fetching the present timestamp for createdAt
         infoLease.setCreatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
@@ -148,6 +148,8 @@ public class LeaseController {
 
             if (leaseRepo.findById(leaseID).isPresent()) {
                 Lease leaseFound = leaseRepo.findById(leaseID).get();
+//                leaseRepo.deleteById(leaseID);
+
 
                 leaseFound.setArea(leaseToUpdate.getArea());
                 leaseFound.setPaymentPerCare(leaseToUpdate.getPaymentPerCare());
@@ -155,13 +157,13 @@ public class LeaseController {
                 leaseFound.setContractVatPercentage(leaseToUpdate.getContractVatPercentage());
                 leaseFound.setBranchCode(leaseToUpdate.getBranchCode());
                 leaseFound.setLeaseCategoryType(leaseToUpdate.getLeaseCategoryType());
-                leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
+//                leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
                 leaseFound.setShortTermLease(leaseToUpdate.isShortTermLease());
 
-                leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
+//                leaseFound.setContractAgreementPeriod(leaseToUpdate.getContractAgreementPeriod());
                 leaseFound.setContractCommencementDate(leaseToUpdate.getContractCommencementDate());
                 leaseFound.setContractExpiryDate(leaseToUpdate.getContractExpiryDate());
-                leaseFound.setFirstInstallmentDate(leaseToUpdate.getFirstInstallmentDate());
+//                leaseFound.setFirstInstallmentDate(leaseToUpdate.getFirstInstallmentDate());
                 leaseFound.setInterestRate(leaseToUpdate.getInterestRate());
                 leaseFound.setLowValueAsset(leaseToUpdate.isLowValueAsset());
                 leaseFound.setPrePaymentEndDate(leaseToUpdate.getPrePaymentEndDate());
@@ -213,7 +215,7 @@ public class LeaseController {
                 leaseFound.setLeaseLiability(leaseFound.getAnnualRentalFee() * leaseFound.getLeaseLiabilityPeriod());
 
                 //deriving first installment date
-                leaseFound.setFirstInstallmentDate(nextDateForPrepaymentEndDate);
+                leaseFound.setFirstInstallmentDate(endOfMonthForPrepaymentEndDate);
 
                 leaseFound.setReportedBy(leaseToUpdate.getReportedBy());
 

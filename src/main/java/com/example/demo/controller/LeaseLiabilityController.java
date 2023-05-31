@@ -4,7 +4,6 @@ import com.example.demo.model.Lease;
 import com.example.demo.model.LeaseLiabilityPV;
 import com.example.demo.repository.LeaseLiabilityRepo;
 import com.example.demo.repository.LeaseRepo;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +55,7 @@ public class LeaseLiabilityController {
         leaseLiabilityPV.setAmountLeaseLiability(totalInstallmentLL(lessorName));
         leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
         leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
+        deleteRemaining();
 
 
         return leaseLiabilityRepo.save(leaseLiabilityPV);
@@ -98,9 +98,7 @@ public class LeaseLiabilityController {
 
     @RequestMapping(path = "recentLastLL", method = RequestMethod.GET)
     public LeaseLiabilityPV getLastRecentLiabilityPayment(){
-        System.out.println("before calling the method");
 
-        System.out.println("After calling the method");
         return leaseLiabilityRepo.findByOrderByCalculatedAtDesc().get(0);
     }
 
@@ -111,19 +109,12 @@ public class LeaseLiabilityController {
 
     public void deleteRemaining(){
 
-        System.out.println(leaseLiabilityRepo.count());
 
         if(leaseLiabilityRepo.count() > 4){
-            System.out.println(leaseLiabilityRepo.count());
-            System.out.println("Deleting started");
             for (long i = leaseLiabilityRepo.count(); i > 4; i--) {
-                System.out.println("Entering If");
                 String idToDelete = leaseLiabilityRepo.findByOrderByCalculatedAtDesc().get(4).getId();
                 leaseLiabilityRepo.deleteById(idToDelete);
-                System.out.println("Leaving If");
-                System.out.println("Deleting Ends");
             }
-            System.out.println(leaseLiabilityRepo.count());
 
         }
     }
