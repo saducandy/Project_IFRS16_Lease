@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -49,6 +50,7 @@ public class LLChartController {
     private double interestExpense1;
 
     private int rowNumber = 0;
+    private double counter = 0;
     private LocalDate eachMonth;
     private double payment;
 
@@ -128,8 +130,9 @@ public class LLChartController {
             for (int i = 0; i < monthsInBetween; i++) {
                 rowNumber = rowNumber + 1;
                 eachMonth = endOfMonthForContractCommencementDate.plusMonths(i);
+                counter = counter + 1;
                 endOfMonthForEachMonth = eachMonth.withDayOfMonth(eachMonth.getMonth().length(eachMonth.isLeapYear()));
-
+//                System.out.println(endOfMonthForEachMonth.getMonth().getValue());
 
 
 
@@ -137,13 +140,19 @@ public class LLChartController {
                 if (Arrays.asList(installmentDates).contains(endOfMonthForEachMonth)) {
                     payment = leaseFound.getAnnualRentalFee();
 
+
                 } else {
                     payment = 0;
                 }
 
 
                 /*Calculating Interest expense*/
-                interestExpense = (leaseLiability * leaseFound.getInterestRate()) / 12;
+                if (endOfMonthForEachMonth.getMonth().getValue() == 6 || Arrays.asList(installmentDates).contains(endOfMonthForEachMonth)) {
+                    interestExpense = (leaseLiability * leaseFound.getInterestRate()) * (counter/ 12);
+                    counter = 0;
+                }else {
+                    interestExpense = 0;
+                }
 
                 /*calculating lease Liability for the Chart*/
                 leaseLiability = leaseLiability + interestExpense - payment;
