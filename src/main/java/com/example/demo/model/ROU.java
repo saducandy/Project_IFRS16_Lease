@@ -23,6 +23,15 @@ public class ROU {
     private String BranchCode;
     private ZonedDateTime generatedAt;
     private LocalDate months;
+    private double totalDepreciationExpense;
+
+    public double getTotalDepreciationExpense() {
+        return totalDepreciationExpense;
+    }
+
+    public void setTotalDepreciationExpense(double totalDepreciationExpense) {
+        this.totalDepreciationExpense = totalDepreciationExpense;
+    }
 
     public LocalDate getMonths() {
         return months;

@@ -32,6 +32,7 @@ public class ROUController {
     private String branchCode;
     private LocalDate eachMonth;
     private LocalDate endOfMonthForContractCommencementDate;
+    private int counter = 0;
 
 
     /*Autowiring the Repository classes*/
@@ -72,12 +73,17 @@ public class ROUController {
                 System.out.println(openingROU);
 
 
+                counter = counter + 1;
                 eachMonth = endOfMonthForContractCommencementDate.plusMonths(i);
                 eachMonth = eachMonth.withDayOfMonth(eachMonth.getMonth().length(eachMonth.isLeapYear()));
                 depreciationROU = openingROU / (monthsInBetween - i);
-//                if (i != monthsInBetween) {
-//                    depreciationROU = openingROU / (monthsInBetween - i);
-//                }
+                if (eachMonth.getMonth().getValue() == 6){
+                    rou1.setTotalDepreciationExpense(depreciationROU * counter);
+                    counter = 0;
+                }else {
+                    rou1.setTotalDepreciationExpense(0);
+                }
+
                 closingROU = openingROU - depreciationROU;
                 openingROU = closingROU;
 

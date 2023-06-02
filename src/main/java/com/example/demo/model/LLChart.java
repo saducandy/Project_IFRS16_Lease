@@ -26,11 +26,22 @@ public class LLChart {
     private LocalDate eachMonth;
     private double payment;
     private ZonedDateTime generatedAt;
+    private double totalIE;
 
 
     /**********************************************************************************************/
                                     /*Generating setters and getters*/
+
+    public double getTotalIE() {
+        return totalIE;
+    }
+
+    public void setTotalIE(double totalIE) {
+        this.totalIE = totalIE;
+    }
+
     /**********************************************************************************************/
+
 
     public String getId() {
         return id;

@@ -41,6 +41,7 @@ public class LLChartController {
     private LocalDate finalInstallmentDate;
 
     private LocalDate[] installmentDates = new LocalDate[5];
+    private double[] summationIR = new double[20];
     private LocalDate endOfMonthForContractCommencementDate;
     private LocalDate endOfMonthForEachMonth;
 
@@ -48,6 +49,7 @@ public class LLChartController {
     private double leaseLiability;
     private double interestExpense;
     private double interestExpense1;
+    private int arrayCounter = 0;
 
     private int rowNumber = 0;
     private double counter = 0;
@@ -149,10 +151,24 @@ public class LLChartController {
                 /*Calculating Interest expense*/
                 if (endOfMonthForEachMonth.getMonth().getValue() == 6 || Arrays.asList(installmentDates).contains(endOfMonthForEachMonth)) {
                     interestExpense = (leaseLiability * leaseFound.getInterestRate()) * (counter/ 12);
+
                     counter = 0;
                 }else {
                     interestExpense = 0;
                 }
+
+
+                /*Calculating summation Interest Expense*/
+                arrayCounter = arrayCounter + 1;
+                summationIR[arrayCounter-1] = interestExpense;
+                if (endOfMonthForEachMonth.getMonth().getValue() == 6){
+                    interestExpense1 = Arrays.stream(summationIR).sum();
+                    Arrays.fill(summationIR,0);
+                    arrayCounter = 0;
+                }else {
+                    interestExpense1 = 0;
+                }
+
 
                 /*calculating lease Liability for the Chart*/
                 leaseLiability = leaseLiability + interestExpense - payment;
@@ -165,6 +181,7 @@ public class LLChartController {
                 generatedLLChart.setInterestExpense(interestExpense);
                 generatedLLChart.setLeaseLiability(leaseLiability);
                 generatedLLChart.setGeneratedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
+                generatedLLChart.setTotalIE(interestExpense1);
 
 
 
