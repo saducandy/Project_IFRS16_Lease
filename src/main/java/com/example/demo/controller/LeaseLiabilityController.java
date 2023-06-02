@@ -29,6 +29,7 @@ public class LeaseLiabilityController {
     private double fraction;
     private long n;
     private long liabilityPeriod;
+    private double amountLeaseLiability;
 
 
     /*****************************************************************************************/
@@ -50,15 +51,35 @@ public class LeaseLiabilityController {
 
     @RequestMapping(path = "{name}",method = RequestMethod.POST)
     public LeaseLiabilityPV saveLiabilityPayment(LeaseLiabilityPV leaseLiabilityPV,@PathVariable(name = "name") String lessorName){
-        Lease lease1 = leaseRepo.findByNameOfLessor(lessorName);
+        if (leaseRepo.findByNameOfLessor(lessorName) != null) {
+            Lease lease1 = leaseRepo.findByNameOfLessor(lessorName);
 
-        leaseLiabilityPV.setAmountLeaseLiability(totalInstallmentLL(lessorName));
-        leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
-        leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
-        deleteRemaining();
+            amountLeaseLiability = totalInstallmentLL(lessorName);
+            leaseLiabilityPV.setAmountLeaseLiability(amountLeaseLiability);
+            leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
+            leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
+            leaseLiabilityPV.setCalculatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
+            deleteRemaining();
+
+            updateLeaseEntity(lessorName);
+            return leaseLiabilityRepo.save(leaseLiabilityPV);
+        }else {
+            System.out.println("No lease found with the given name!!!");
+            return null;
+        }
+    }
 
 
-        return leaseLiabilityRepo.save(leaseLiabilityPV);
+    @RequestMapping(method = RequestMethod.PUT)
+    public void updateLeaseEntity(String lessorName2){
+        Lease lease2 = leaseRepo.findByNameOfLessor(lessorName2);
+
+
+        lease2.setLeaseLiabilityPV(amountLeaseLiability);
+
+        leaseRepo.save(lease2);
+
+
     }
 
     @RequestMapping(path = "allLeasePayments", method = RequestMethod.GET)

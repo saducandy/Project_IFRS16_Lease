@@ -55,8 +55,17 @@ public class Lease{
     private long leaseLiabilityPeriod;//calculated
 
     private double leaseLiability;
+    private double leaseLiabilityPV;
 
     private ZonedDateTime createdAt;
+
+    public double getLeaseLiabilityPV() {
+        return leaseLiabilityPV;
+    }
+
+    public void setLeaseLiabilityPV(double leaseLiabilityPV) {
+        this.leaseLiabilityPV = leaseLiabilityPV;
+    }
 
     public ZonedDateTime getCreatedAt() {
         return createdAt;

@@ -88,7 +88,7 @@ public class LLChartController {
     /**********************************************************************************************/
 
     @RequestMapping(path = "{name}",method = RequestMethod.POST)
-    public void whichLease(@PathVariable(name ="name") String lessorName) {
+    public void generateLLChart(@PathVariable(name ="name") String lessorName) {
 
         llChartRepo.deleteAll();
 
