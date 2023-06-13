@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
@@ -14,9 +13,12 @@ public class Lease{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long leaseID;
-    @Column(unique = true)
+
     private String branchCode;
+    private String branchName;
+    private String branchDistrict;
     private String reportedBy;
+
     @Column(unique = true)
     private String nameOfLessor;
     private boolean lowValueAsset;
@@ -26,8 +28,8 @@ public class Lease{
     private long contractAgreementPeriod;
     private double initialPayment;
     private double interestRate;
-    private long remainingMonthsForPrepaidRentAfterInitialApplication;
-    private long remainingMonthsInContractTermNotPaidAfterInitialApplication;
+    private double remainingMonthsForPrepaidRentAfterInitialApplication;
+    private double remainingMonthsInContractTermNotPaidAfterInitialApplication;
     private String leaseCategoryType;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate prePaymentEndDate;
@@ -52,7 +54,7 @@ public class Lease{
 
     private double annualRentalFee;//calculated
 
-    private long leaseLiabilityPeriod;//calculated
+    private double leaseLiabilityPeriod;//calculated
 
     private double leaseLiability;
     private double leaseLiabilityPV;
@@ -83,12 +85,28 @@ public class Lease{
         this.leaseLiability = leaseLiability;
     }
 
-    public long getLeaseLiabilityPeriod() {
+    public double getLeaseLiabilityPeriod() {
         return leaseLiabilityPeriod;
     }
 
-    public void setLeaseLiabilityPeriod(long leaseLiabilityPeriod) {
+    public void setLeaseLiabilityPeriod(double leaseLiabilityPeriod) {
         this.leaseLiabilityPeriod = leaseLiabilityPeriod;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchDistrict() {
+        return branchDistrict;
+    }
+
+    public void setBranchDistrict(String branchDistrict) {
+        this.branchDistrict = branchDistrict;
     }
 
     public String getBranchCode() {
@@ -171,19 +189,19 @@ public class Lease{
         this.interestRate = interestRate;
     }
 
-    public long getRemainingMonthsForPrepaidRentAfterInitialApplication() {
+    public double getRemainingMonthsForPrepaidRentAfterInitialApplication() {
         return remainingMonthsForPrepaidRentAfterInitialApplication;
     }
 
-    public void setRemainingMonthsForPrepaidRentAfterInitialApplication(long remainingMonthsForPrepaidRentAfterInitialApplication) {
+    public void setRemainingMonthsForPrepaidRentAfterInitialApplication(double remainingMonthsForPrepaidRentAfterInitialApplication) {
         this.remainingMonthsForPrepaidRentAfterInitialApplication = remainingMonthsForPrepaidRentAfterInitialApplication;
     }
 
-    public long getRemainingMonthsInContractTermNotPaidAfterInitialApplication() {
+    public double getRemainingMonthsInContractTermNotPaidAfterInitialApplication() {
         return remainingMonthsInContractTermNotPaidAfterInitialApplication;
     }
 
-    public void setRemainingMonthsInContractTermNotPaidAfterInitialApplication(long remainingMonthsInContractTermNotPaidAfterInitialApplication) {
+    public void setRemainingMonthsInContractTermNotPaidAfterInitialApplication(double remainingMonthsInContractTermNotPaidAfterInitialApplication) {
         this.remainingMonthsInContractTermNotPaidAfterInitialApplication = remainingMonthsInContractTermNotPaidAfterInitialApplication;
     }
 
@@ -296,6 +314,8 @@ public class Lease{
         return "Lease{" +
                 "leaseID=" + leaseID +
                 ", branchCode='" + branchCode + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", branchDistrict='" + branchDistrict + '\'' +
                 ", reportedBy='" + reportedBy + '\'' +
                 ", nameOfLessor='" + nameOfLessor + '\'' +
                 ", lowValueAsset=" + lowValueAsset +
@@ -320,6 +340,10 @@ public class Lease{
                 ", contractVatPercentage=" + contractVatPercentage +
                 ", totalPeriodPayment=" + totalPeriodPayment +
                 ", annualRentalFee=" + annualRentalFee +
+                ", leaseLiabilityPeriod=" + leaseLiabilityPeriod +
+                ", leaseLiability=" + leaseLiability +
+                ", leaseLiabilityPV=" + leaseLiabilityPV +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

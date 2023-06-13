@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
@@ -27,10 +24,49 @@ public class LLChart {
     private double payment;
     private ZonedDateTime generatedAt;
     private double totalIE;
+    private double totalPayment;
+    private String branchCode;
+    private String branchName;
+    private String branchDistrict;
+//    @Column(unique = true)
+    private String lessorName;
 
+
+    public String getLessorName() {
+        return lessorName;
+    }
+
+    public void setLessorName(String lessorName) {
+        this.lessorName = lessorName;
+    }
+
+    public String getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchDistrict() {
+        return branchDistrict;
+    }
+
+    public void setBranchDistrict(String branchDistrict) {
+        this.branchDistrict = branchDistrict;
+    }
 
     /**********************************************************************************************/
                                     /*Generating setters and getters*/
+
 
     public double getTotalIE() {
         return totalIE;
@@ -40,7 +76,16 @@ public class LLChart {
         this.totalIE = totalIE;
     }
 
+    public double getTotalPayment() {
+        return totalPayment;
+    }
+
+    public void setTotalPayment(double totalPayment) {
+        this.totalPayment = totalPayment;
+    }
+
     /**********************************************************************************************/
+
 
 
     public String getId() {
@@ -102,8 +147,8 @@ public class LLChart {
 
     /**********************************************************************************************/
     /*converting each to String*/
-    /**********************************************************************************************/
 
+    /**********************************************************************************************/
     @Override
     public String toString() {
         return "LLChart{" +
@@ -114,6 +159,12 @@ public class LLChart {
                 ", eachMonth=" + eachMonth +
                 ", payment=" + payment +
                 ", generatedAt=" + generatedAt +
+                ", totalIE=" + totalIE +
+                ", totalPayment=" + totalPayment +
+                ", branchCode='" + branchCode + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", branchDistrict='" + branchDistrict + '\'' +
+                ", lessorName='" + lessorName + '\'' +
                 '}';
     }
 }

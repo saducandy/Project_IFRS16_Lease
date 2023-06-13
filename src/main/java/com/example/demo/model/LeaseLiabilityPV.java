@@ -12,15 +12,34 @@ public class LeaseLiabilityPV {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
+
     @Column(unique = true)
     private String lessorName;
-    @Column(unique = true)
+
     private String branchCode;
+    private String branchName;
+    private String branchDistrict;
     private double amountLeaseLiability;
     private ZonedDateTime calculatedAt;
 
     public String getId() {
         return id;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchDistrict() {
+        return branchDistrict;
+    }
+
+    public void setBranchDistrict(String branchDistrict) {
+        this.branchDistrict = branchDistrict;
     }
 
     public ZonedDateTime getCalculatedAt() {
@@ -56,15 +75,16 @@ public class LeaseLiabilityPV {
     }
 
 
-
-
     @Override
     public String toString() {
         return "LeaseLiabilityPV{" +
                 "id='" + id + '\'' +
                 ", lessorName='" + lessorName + '\'' +
                 ", branchCode='" + branchCode + '\'' +
-                ", amountLeaseLiability='" + amountLeaseLiability + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", branchDistrict='" + branchDistrict + '\'' +
+                ", amountLeaseLiability=" + amountLeaseLiability +
+                ", calculatedAt=" + calculatedAt +
                 '}';
     }
 }

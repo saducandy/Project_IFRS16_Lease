@@ -21,6 +21,9 @@ public class ROU {
     private double depreciationOfROU;
     private String lessorName;
     private String BranchCode;
+    private String branchName;
+    private String branchDistrict;
+
     private ZonedDateTime generatedAt;
     private LocalDate months;
     private double totalDepreciationExpense;
@@ -31,6 +34,22 @@ public class ROU {
 
     public void setTotalDepreciationExpense(double totalDepreciationExpense) {
         this.totalDepreciationExpense = totalDepreciationExpense;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchDistrict() {
+        return branchDistrict;
+    }
+
+    public void setBranchDistrict(String branchDistrict) {
+        this.branchDistrict = branchDistrict;
     }
 
     public LocalDate getMonths() {
@@ -107,8 +126,11 @@ public class ROU {
                 ", depreciationOfROU=" + depreciationOfROU +
                 ", lessorName='" + lessorName + '\'' +
                 ", BranchCode='" + BranchCode + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", branchDistrict='" + branchDistrict + '\'' +
                 ", generatedAt=" + generatedAt +
                 ", months=" + months +
+                ", totalDepreciationExpense=" + totalDepreciationExpense +
                 '}';
     }
 }

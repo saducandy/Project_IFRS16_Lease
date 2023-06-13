@@ -27,8 +27,8 @@ public class LeaseLiabilityController {
     private double r = 1.1177;
     private double power;
     private double fraction;
-    private long n;
-    private long liabilityPeriod;
+    private double n;
+    private double liabilityPeriod;
     private double amountLeaseLiability;
 
 
@@ -59,6 +59,8 @@ public class LeaseLiabilityController {
             leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
             leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
             leaseLiabilityPV.setCalculatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
+            leaseLiabilityPV.setBranchName(lease1.getBranchName());
+            leaseLiabilityPV.setBranchDistrict(lease1.getBranchDistrict());
             deleteRemaining();
 
             updateLeaseEntity(lessorName);
@@ -90,20 +92,20 @@ public class LeaseLiabilityController {
     /*********************************taking the name of lessor form the Request Body*************************************************/
 
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public LeaseLiabilityPV saveLiabilityPayment1(LeaseLiabilityPV leaseLiabilityPV,@RequestBody Lease lease){
-
-        Lease lease1 = leaseRepo.findByNameOfLessor(lease.getNameOfLessor());
-
-        leaseLiabilityPV.setAmountLeaseLiability(totalInstallmentLL(lease.getNameOfLessor()));
-        leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
-        leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
-        leaseLiabilityPV.setCalculatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
-        deleteRemaining();
-
-
-        return leaseLiabilityRepo.save(leaseLiabilityPV);
-    }
+//    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public LeaseLiabilityPV saveLiabilityPayment1(LeaseLiabilityPV leaseLiabilityPV,@RequestBody Lease lease){
+//
+//        Lease lease1 = leaseRepo.findByNameOfLessor(lease.getNameOfLessor());
+//
+//        leaseLiabilityPV.setAmountLeaseLiability(totalInstallmentLL(lease.getNameOfLessor()));
+//        leaseLiabilityPV.setLessorName(lease1.getNameOfLessor());
+//        leaseLiabilityPV.setBranchCode(lease1.getBranchCode());
+//        leaseLiabilityPV.setCalculatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
+//        deleteRemaining();
+//
+//
+//        return leaseLiabilityRepo.save(leaseLiabilityPV);
+//    }
 
 
     /*************************************************Getting the Last recent Lease Liability*************************************************/
@@ -156,18 +158,18 @@ public class LeaseLiabilityController {
 
         Lease foundLease = leaseRepo.findByNameOfLessor(lessorName);
         FV = foundLease.getAnnualRentalFee();
+        System.out.println(FV);
 
-
-        n = (int) (foundLease.getRemainingMonthsForPrepaidRentAfterInitialApplication() / 12) + (whichInstallment);
-
+        n = (foundLease.getRemainingMonthsForPrepaidRentAfterInitialApplication() / 12) + (whichInstallment);
+        System.out.println(n);
 
         power = pow(r, n);
-
+        System.out.println(power);
 
         fraction = 1/power;
+        System.out.println(fraction);
 
-
-
+        System.out.println(FV * fraction);
         return FV * fraction;
 
     }

@@ -135,6 +135,8 @@ public class LeaseController {
         infoLease.setCreatedAt(ZonedDateTime.now(ZoneId.of("Africa/Addis_Ababa")));
 
 
+
+
         System.out.println(infoLease.getBranchCode());
         return leaseRepo.save(infoLease);
 
@@ -167,6 +169,8 @@ public class LeaseController {
                 leaseFound.setInterestRate(leaseToUpdate.getInterestRate());
                 leaseFound.setLowValueAsset(leaseToUpdate.isLowValueAsset());
                 leaseFound.setPrePaymentEndDate(leaseToUpdate.getPrePaymentEndDate());
+                leaseFound.setBranchName(leaseToUpdate.getBranchName());
+                leaseFound.setBranchDistrict(leaseToUpdate.getBranchDistrict());
 
 
 
